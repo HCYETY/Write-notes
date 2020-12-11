@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>闭包的十种表现形式</title>
+</head>
+<body>
+    <script>
+        // 1、返回值(最常见的一种形式)
+        var fn = function () {
+            var name = "yfz"
+            return function() {
+                return name;
+            }
+        }
+        var fic = fn();
+        console.log( fic() ); //yfz
+
+        // 2、函数赋值(一种变形形式：将内部函数赋值给一个外部的变量)
+        var fn2;
+        var fn = function() {
+            var name = 'yfz';
+            var a = function() {
+                return name;
+            }
+            fn2 = a;
+        }
+        fn();
+        console.log( fn2() ); //yfz
+
+        // 3、函数参数
+        function fn3(f) {
+            console.log( f() ); //yfz
+        }
+        function fn() {
+            var name = 'yfz';
+            var a = function() {
+                return name;
+            }
+            fn3(a);
+        }
+        fn();
+
+        // 4、IIFE
+        // 5、循环赋值
+        // 6、getter和setter
+        // 7、迭代器
+        // 8、区分首次
+        // 9、缓存机制
+        // 10、img对象图片上传
+    </script>
+</body>
+</html>

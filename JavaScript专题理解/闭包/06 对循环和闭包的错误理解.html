@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对循环和闭包的错误理解</title>
+</head>
+<body>
+    <script>
+        function foo() {
+            var arr = [];
+            for(var i = 0; i < 10; i++) {
+                arr[i] = function () {
+                    return i;
+                }
+            }
+            return arr;
+        }
+        var bar = foo();
+        console.log( bar[0]() );//10-->for循环结束之后的索引值(向上找作用域)
+
+        // 解决方案1：使用闭包解决循环中变量的问题，相当于把变量保存在内存中，每次执行的时候从内存中获取
+        function foo() {
+            var arr = [];
+            for(var i = 0; i < 10; i++) {
+                // arr[i] = (function(n) {      //写法一
+                //     return function() {
+                //         return n;
+                //     }
+                // }) (i);
+
+                (function(n) {                  //写法二
+                    arr[n] = function() {
+                        return n;
+                    }                    
+                }) (i);
+
+            }
+            return arr;
+        }
+        var bar = foo();
+        console.log( bar );
+        console.log( BAR[0]() );//0
+        console.log( BAR[1]() );//1
+        console.log( BAR[2]() );//2
+        console.log( BAR[3]() );//3
+
+        // 解决方案2：let块级作用域
+        function foo() {
+            var arr = [];
+            for(let i = 0; i < 10; i++) {  // 在for循环内部有一个块级作用域{}
+                arr[i] = function() {  // 这里也有一个函数作用域，然后它先找for循环的块级作用域，再找foo的作用域
+                    return i;
+                }
+            }
+            return arr;
+        }
+        var bar = foo();
+        console.log( bar[0]() ); //0
+        console.log( bar[1]() ); //1
+        console.log( bar[2]() ); //2
+        console.log( bar[3]() ); //3
+    </script>
+</body>
+</html>

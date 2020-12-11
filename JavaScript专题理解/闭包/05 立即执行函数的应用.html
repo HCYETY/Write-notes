@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>立即执行函数的应用</title>
+</head>
+<body>
+    <script>
+        // 计数器
+        // 需求：每次调用add函数都返回加1的数字(初始值为0)
+
+        // 1、全局变量(会污染全局的变量)
+        var a = 0;
+        function add () {
+            return ++a;
+        }
+        console.log( add() );//1
+        console.log( add() );//2
+        console.log( add() );//3
+        console.log( add() );//4
+
+        // 2、自定义属性(有些代码可能会无意修改add.count)
+        function add () {
+            return ++add.count;  //不理解
+        }
+        add.count = 0;
+        console.log( add() ); //1
+        console.log( add() ); //2
+        console.log( add() ); //3
+        console.log( add() ); //4
+
+        // 一定程度上立即执行函数也叫闭包，可以封装私有的属性,同时可以减少对全局变量的污染
+        var add = (function (){
+            var count = 0; //私有属性
+            return function () {
+                return ++count;
+            }
+        })();
+        console.log( add ); // function () {
+                            //     return ++count;
+                            // }
+        console.log( add() );   //1
+        console.log( add() );   //2
+        console.log( add() );   //3
+        console.log( add() );   //4
+        console.log( count ) //count is not defined
+    </script>
+</body>
+</html>
