@@ -42,12 +42,116 @@
         fn();
 
         // 4、IIFE
+        function fn4(f) {
+            console.log( f() );
+        }
+        (function(){
+            var name = 'yfz';
+            var a = function() {
+                return name;
+            }
+            fn4(a);
+        })();
+
         // 5、循环赋值
-        // 6、getter和setter
+        function foo() {
+            var arr = [];
+            for(var i = 0; i < 10; i++) {
+                // (function(i) {                 // 写法一
+                //     arr[i] = function() {
+                //         return i;
+                //     }
+                // })(i);
+
+                arr[i] = (function(n) {           // 写法二
+                    return function() {
+                        return n;
+                    }
+                })(i);
+            }
+            return arr;
+        }
+        var bar = foo();
+        console.log( bar[3]() );//3
+
+        // 6、getter和setter(将要操作的变量保存在函数内部，防止暴露在外部)
+        var getValue, setValue;
+        (function() {
+            var num = 0;
+            getValue = function() {
+                return num;
+            }
+            setValue = function(v) {
+                if(typeof v === 'number') {
+                    num = v;
+                }
+            }
+        })();
+        console.log( getValue() ); //0
+        setValue(10);
+        console.log( getValue() ); //10  // 不理解
+
         // 7、迭代器
+        // 7.1计数器
+        var add = function() {
+            var num = 0;
+            return function() {
+                return ++num;
+            }
+        }();
+        console.log( add() ); //1
+        console.log( add() ); //2
+
+        // 7.2迭代器
+        function setUp(arr) {
+            var i = 0;
+            return function() {
+                return arr[i++];
+            }
+        }
+        var next = setUp(['computer','yfz','20']);
+        console.log( next() ); //computer
+        console.log( next() ); //yfz
+        console.log( next() ); //20
+
         // 8、区分首次
+        var firstLoad = (function() {
+            var list = [];
+            return function(id) {
+                if(list.indexOf(id) >= 0) {
+                    //list已经有id
+                    return false;
+                } else {
+                    //首次调用
+                    list.push(id);
+                    return ture;
+                }
+            }
+        })();
+        console.log( firstLoad(10) ); //ture
+        console.log( firstLoad(10) ); //false
+        console.log( firstLoad(20) ); //ture
+        console.log( firstLoad(30) ); //ture
+        console.log( firstLoad(40) ); //ture
+        console.log( firstLoad(40) ); //false
+
         // 9、缓存机制
-        // 10、img对象图片上传
+        // 9.1未加入缓存
+        function mult() {
+            // arguments
+            var sum = 0;
+            for(var i = 0; i < arguments.length; i++) {
+                sum += arguments[i];
+            }
+            return sum;
+        }
+        console.log( mult(1,2,3,1,1,2,3) ); //求和：13
+        console.log( mult(1,2,3,1,1,2,3) ); //求和：13
+
+        // 9.2有缓存机制
+        
+
+        // 10、img对象图片上报
     </script>
 </body>
 </html>
