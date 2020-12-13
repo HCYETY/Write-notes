@@ -148,10 +148,44 @@
         console.log( mult(1,2,3,1,1,2,3) ); //求和：13
         console.log( mult(1,2,3,1,1,2,3) ); //求和：13
 
-        // 9.2有缓存机制
-        
+        // 9.2有缓存机制     //不理解
+        var mult = function() {
+            // 缓存对象
+            var cache = {};
+            var calculate = function() {
+                var sum = 0;
+                for(var i = 0; i <arguments.length; i++) {
+                    sum += i;
+                }
+                return sum;
+            }
+            return function() {
+                // 对cache对象进行操作
+                // 1,2,3,1,1,2,3
+                var args = Array.prototype.join.call(arguments,',');
+                if(args in cache) {
+                    return cache[args];
+                }
+                console.log( cache );
+                return cache[args] = calculate.apply(null,arguments);
+            }
+        }();
+        console.log( mult(1,2,3,1,1,2,3) );
+        console.log( mult(1,2,3,1,1,2,3) );
+        console.log( mult(1,2,3,1,1,2,3,10,20) );
+        console.log( mult(1,2,3,1,1,2,3,10,20,1) );
 
         // 10、img对象图片上报
+        // 使用闭包来做图片上报   // 不理解
+        var report = function(src) {
+            var imgs = [];
+            return function(src) {
+                var img = new Image();
+                imgs.push(img);
+                img.src = src;
+            }
+        }();
+        report('http://xxx.com/getUserInfo');
     </script>
 </body>
 </html>
