@@ -227,4 +227,102 @@ $(document).ready(function () {
 
 *******
 
+### jQuery内容选择器
+1. :empty
+作用：找到既没有文本内容也没有子元素的指定元素
+```
+var $div = $("div:empty");
+console.log($div);
+```
+
+2. :parent
+作用：找到有文本内容或有子元素的指定元素
+```
+var $div = $("div:parent");
+```
+
+3. :contains
+作用：找到包含指定文本内容的指定元素
+```
+var $div = $("div:contains('我是div')")；
+```
+
+4. :has(selector)
+作用：找到包含指定子元素的指定元素
+```
+var $div = $("div:has('span')");
+```
+
+******
+
+### attr和removeAttr方法
+1. 作用：获取或者设置属性节点的值，可以传递一或两个参数；
+如果传递一个参数，代表获取属性节点的值，
+如果传递两个参数，代表设置属性节点的值
+```
+<span class="span1 name="it666"></span>
+<span class="span2 name="lnj"></span>
+$("span").attr("class");
+*如果是获取，无论找到多少个元素，都只会返回第一个元素指定的属性节点的值*
+$("span").attr("class", "box");
+*如果是设置，找到多少个元素就会设置多少个元素；如果设置的属性节点不存在，那么系统会自动新增*
+```
+
+2. removeAttr(name)
+作用：删除属性节点
+```
+<span class="span1 name="it666"></span>
+<span class="span2 name="lnj"></span>
+$("span").removeAttr("class");
+```
+*会删除所有找到元素指定的属性节点，如果要删除多个，则用空格隔开即可*
+
+*******
+
+### prop和removeProp方法
+1. prop
+```
+$("span").eq(0)指找到第一个span标签
+$("span").eq(0).prop("demo", "it666");
+新增一个demo属性，并赋值为it666
+```
+*特点和attr方法一致，除此之外，还能操作属性节点*
+2.removeProp
+*特点和removeAttr方法一致*
+
+**官方推荐在操作属性节点时，具有true和false两个属性的属性节点，如checked，selected或者disabled，使用prop()，其他的使用attr()**
+
+*******
+
+### jquery类操作相关方法
+1. addClass(class||fn)
+作用：添加一个类
+如果要添加多个，多个类名之间用空格隔开即可
+2. removeClass( [class||fn] )
+作用：删除一个类
+如果想删除多个，多个类名之间用空格隔开即可
+3. toggleClass( class||fn[,sw] )
+有就删除，没有就添加
+
+********
+
+### jQuery文本值相关操作
+1. html( [val|fn] )
+和原生JS中的innerHTML一模一样
+2. text( [val|fn] )
+和原生JS中的innerText一模一样
+3. val( [val|fn|arr] )
+```
+<input></input>
+$("input").val("请输入内容");
+这时输入框中会显示“请输入内容”
+```
+
+*******
+
+### jQuery的scrollTop方法
+1. 
+
+*******
+
 ### 
