@@ -320,9 +320,113 @@ $("input").val("请输入内容");
 
 *******
 
-### jQuery的scrollTop方法
-1. 
+### jQuery事件
+事件绑定有两种方式：
+1. eventName(fn);
+```
+$("button").click(function () {
+    alert("hello siyang");
+});
+```
+*编码效率略高/部分事件jQuery没有实现，所以不能添加*
+2.on(eventName,fn);
+```
+$("button").on("click", function() {
+    alert("hello siyang");
+});
+```
+*编码效率略低/所有js事件都能添加*
+
+**两种方法可以添加多个相同或者不同类型的事件，不会覆盖**
+
+事件解绑
+off方法：
+如果不传递参数，会移除所有的事件
+`$("button").off();`
+如果传递一个参数，会移除所有指定类型的事件
+`$("button").off("click");`
+如果传递两个参数，会移除所有指定类型的指定事件
+`$("button").off("click", test1);`
+
 
 *******
 
-### 
+### jQuery事件冒泡和默认行为
+1. 什么是事件冒泡
+2. 如何阻止事件冒泡：在下级/儿子事件绑定处加上“return false;”或者“event.stopPropagation();”
+3. 什么是默认行为
+4. 如何阻止默认行为：在事件绑定处加上“return false;”或者“event.preventDefault();”
+
+*******
+
+### jquery事件自动触发
+1. trigger:如果用trigger自动触发事件，会触发事件冒泡，会触发默认行为；
+2. triggerHndleer：如果利用triggerHndleer自动触发事件，不会触发事件冒泡，不会触发默认行为。
+```
+<div class="father"></div>
+$(".father").trigger("click");
+$(".father").triggerHandler("click");
+```
+
+*******
+
+### jQuery自定义事件
+必须满足两个条件：
+1. 事件必须是通过on绑定的
+2. 事件必须通过trigger来触发
+
+*******
+
+### jQuery事件命名空间
+想要事件的命名空间有效，必须满足两个条件：
+1. 事件是通过on来绑定的
+2. 通过trigger触发事件
+```
+$(".father").on("click.siyang", function () {
+    alert("father click1");
+})
+$(".father").on("click", function () {
+    alert("father click2");
+})
+$(".son").on("click.siyang", function () {
+    alert("son click1");
+})
+```
+`$(".son").trigger("click.siyang");`
+//son click1
+//father click1
+
+*利用trigger触发子元素带命名空间的事件，那么父元素带相同命名空间的事件也会被触发，而父元素没有命名空间的事件不会被触发*
+
+`$(".son").trigger("click");`
+//son click1
+//father click1
+//father click2
+
+ *利用trigger触发子元素不带命名空间的事件，那么子元素所有相同类型的事件和父元素所有相同类型的事件都会被触发*
+
+*******
+
+### jquery事件委托
+什么是事件委托：请别人帮忙做事情，然后将做完的结果反馈给我们
+```
+<ul>
+    <li>我是第1个li<li>
+    <li>我是第2个li<li>
+    <li>我是第3个li<li>
+</ul>
+<button>新增一个li</button>
+$("ul").delegate("li", "click", function() {
+    console.log($(this).html());
+});
+```
+
+*******
+
+## 移入移出事件
+1. mouseover/mouseout：子元素被移入移出也会触发父元素的事件
+2. mouseenter/mouseleave：子元素被移入移出不会触发父元素的事件(推荐使用)
+3. 既监听移入又监听移出事件的方法：
+hover(function(){}, function(){})
+若输入两个参数：第一个参数表移入，第二个参数表移出
+若输入一个参数，则既表移入又表移出
